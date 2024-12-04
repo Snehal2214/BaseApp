@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="BaseApp.Views.Reports"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:Converters="clr-namespace:WpfHelpers.Resources.Converters;assembly=WpfHelpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Converters:InvertValueVisibilityConverter x:Key="InvertValueVisibilityConverter" />
+        <Converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
+    <Grid Background="#fff">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#222d32" Height="50">
+            <DockPanel HorizontalAlignment="Stretch" LastChildFill="False">
+                <Button DockPanel.Dock="Left"  Margin="10,0,0,0" Style="{DynamicResource  TransparentButton}">
+                    <Button.Content >
+                        <StackPanel VerticalAlignment="Center"  Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="&#xf08b;" HorizontalAlignment="Left" Margin="5,0,5,0" Style="{DynamicResource FontAwesome}" FontSize="14" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <TextBlock Text="Report" FontSize="16" Foreground="#fff"  DockPanel.Dock="Left" VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
+        <Border Grid.Row="1" Background="#ecf0f5" VerticalAlignment="Stretch" Padding="15">
+            <Grid>
+                <Border BorderThickness="0,3,0,0" Background="#fff" BorderBrush="#3c8dbc" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0">
+                    <StackPanel Orientation="Vertical">
+                        <Border BorderThickness="0,0,0,1" Padding="10" BorderBrush="#f4f4f4">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="In-all Report" FontSize="16" FontWeight="SemiBold"  LineHeight="1"/>
+                                <TextBlock DockPanel.Dock="Left" Margin="20,0" Text="{Binding InfoMessage, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}"  Foreground="Green" FontSize="16" FontWeight="Bold"/>
+                                <TextBlock  DockPanel.Dock="Left" Margin="20,0" Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}" Foreground="Red" FontSize="16" FontWeight="Bold" />
+                            </DockPanel>
+                        </Border>
+                        <Border BorderThickness="10">
+                            <DockPanel LastChildFill="False">
+                                <Border DockPanel.Dock="Left" BorderThickness="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Button Content="Search" Command="{Binding ReportSearch}" Background="#f2efef" Foreground="#333" BorderThickness="0" DockPanel.Dock="Left"/>
+                                </Border>
+                                <DockPanel DockPanel.Dock="Left" Visibility="{Binding FilterMenu, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=False}" >
+                                    <Border DockPanel.Dock="Left"  BorderThickness="0,0,0,0">
+                                        <TextBox Padding="12,6,0,6" Margin="10,0,10,0" Style="{StaticResource LabelTBXValue}" Text="{Binding Filtertxt, StringFormat='dd-MM-yyyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="34" Width="200" FontSize="14"/>
+                                    </Border>
+                                    <Border DockPanel.Dock="Left"  BorderThickness="0,0,0,0">
+                                        <DatePicker Padding="12,6,6,6" Margin="10,0,10,0" Text="{Binding DateFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14"/>
+                                    </Border>
+                                    <Border DockPanel.Dock="Left" BorderThickness="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Button Content="Clear" Command="{Binding ClearFilter}" Background="#f2efef" Foreground="#333" BorderThickness="0" DockPanel.Dock="Left"/>
+                                    </Border>
+                                </DockPanel>
+                                <Border DockPanel.Dock="Right" BorderThickness="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Button Content="Export" Command="{Binding ExportFile}" Background="#f2efef"  Foreground="#333" BorderThickness="0" DockPanel.Dock="Left"/>
+                                </Border>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+        <DataGrid Grid.Row="2" 
+                  Margin="15,0,15,40"
+                    FontSize="16" 
+                    BorderThickness="1" 
+                    BorderBrush="#fff" 
+                    ItemsSource="{Binding DataItemList1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    IsReadOnly="True" 
+                    CanUserResizeRows="False" 
+                    CanUserResizeColumns="False"
+                    GridLinesVisibility="Horizontal"     
+                    SelectionMode="Single" 
+                    SelectionUnit="FullRow"  
+                    HorizontalScrollBarVisibility="Auto"
+                    Visibility="{Binding ResultsAvailable1, Converter={StaticResource BooleanToVisibilityConverter},FallbackValue=False}"
+                    x:Name="grdList"
+                    AutoGenerateColumns="True"/>
+    </Grid>
+</UserControl>

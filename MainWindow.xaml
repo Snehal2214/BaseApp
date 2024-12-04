@@ -1,0 +1,566 @@
+﻿<Window
+    x:Class="BaseApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:WpfHelpers.Resources.Converters;assembly=WpfHelpers"
+    xmlns:Helpers="clr-namespace:WpfHelpers.Controls;assembly=WpfHelpers"
+    xmlns:ViewModels="clr-namespace:BaseApp.ViewModels"
+    xmlns:Views="clr-namespace:BaseApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BaseApp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title=""
+    ShowInTaskbar="True"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+            <Style x:Key="CheckStyle" TargetType="{x:Type CheckBox}">
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle
+                                            Margin="2"
+                                            SnapsToDevicePixels="True"
+                                            Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                            StrokeDashArray="1 2"
+                                            StrokeThickness="1" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="#FF707070" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <Grid
+                                x:Name="templateRoot"
+                                Background="Transparent"
+                                SnapsToDevicePixels="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    x:Name="checkBoxBorder"
+                                    Margin="1"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid x:Name="markGrid">
+                                        <TextBlock
+                                            x:Name="optionMark"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            FontSize="22"
+                                            Foreground="Green"
+                                            Style="{StaticResource FontAwesome}"
+                                            Text="&#xf058;" />
+                                        <TextBlock
+                                            x:Name="unChecked"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            FontSize="22"
+                                            Foreground="#b3b3b3"
+                                            Style="{StaticResource FontAwesome}"
+                                            Text="&#xf05d;" />
+                                    </Grid>
+                                </Border>
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Grid.Column="1"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True" />
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Hidden" />
+                                    <Setter TargetName="unChecked" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="unChecked" Property="Visibility" Value="Hidden" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="CheckBoxStyle1" TargetType="{x:Type CheckBox}">
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle
+                                            Margin="2"
+                                            SnapsToDevicePixels="True"
+                                            Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                            StrokeDashArray="1 2"
+                                            StrokeThickness="1" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="#FF707070" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <Grid
+                                x:Name="templateRoot"
+                                Background="Transparent"
+                                SnapsToDevicePixels="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    x:Name="checkBoxBorder"
+                                    Margin="1"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid x:Name="markGrid">
+                                        <TextBlock
+                                            x:Name="optionMark"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            FontSize="22"
+                                            Style="{StaticResource FontAwesome}"
+                                            Text="&#xf044;" />
+                                        <TextBlock
+                                            x:Name="unChecked"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            FontSize="22"
+                                            Style="{StaticResource FontAwesome}"
+                                            Text="&#xF00D;" />
+                                    </Grid>
+                                </Border>
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Grid.Column="1"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True" />
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Hidden" />
+                                    <Setter TargetName="unChecked" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="optionMark" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="unChecked" Property="Visibility" Value="Hidden" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Converters:InvertValueVisibilityConverter x:Key="InvertValueVisibility" />
+            <Style x:Key="MenuButton" TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="FontFamily" Value="Helvetica Neue,Helvetica,Arial,sans-serif" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Padding" Value="4,12" />
+                <Setter Property="Background" Value="#222d32" />
+                <Setter Property="Foreground" Value="#fff" />
+                <Setter Property="BorderThickness" Value="0,0,0,1" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border
+                                Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0"
+                                SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Border
+                                        Name="dropShadowBorder"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="0"
+                                        Visibility="Hidden">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.16">
+                                                <GradientStop Offset="0" Color="#22000000" />
+                                                <GradientStop Offset="1" Color="#00000000" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
+                                    <ContentPresenter
+                                        Name="contentPresenter"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        Focusable="False"
+                                        RecognizesAccessKey="True"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <!--  default button highlight  -->
+                                <Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>
+
+                                <!--  inner drop shadow when pressed / checked  -->
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="dropShadowBorder" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="border" Property="Background" Value="#8aa4af" />
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="dropShadowBorder" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.60" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TransparentButton" TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="FontFamily" Value="Helvetica Neue,Helvetica,Arial,sans-serif" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Padding" Value="4,12" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="#fff" />
+                <Setter Property="BorderThickness" Value="0,0,0,0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border
+                                Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0"
+                                SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Border
+                                        Name="dropShadowBorder"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="0"
+                                        Visibility="Hidden" />
+                                    <ContentPresenter
+                                        Name="contentPresenter"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        Focusable="False"
+                                        RecognizesAccessKey="True"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <!--  default button highlight  -->
+                                <Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>
+
+                                <!--  inner drop shadow when pressed / checked  -->
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="dropShadowBorder" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="border" Property="Background" Value="#8aa4af" />
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="dropShadowBorder" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.60" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="Padding" Value="6" />
+            </Style>
+            <Style TargetType="{x:Type DataGridRow}">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="Padding" Value="6" />
+            </Style>
+            <Style TargetType="DataGridCell">
+                <Setter Property="Padding" Value="8" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Border
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate DataType="{x:Type ViewModels:Dashboard}">
+                <Views:Dashboard HorizontalAlignment="Stretch" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModels:Login}">
+                <Views:Login HorizontalAlignment="Stretch" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModels:Settings}">
+                <Views:Settings HorizontalAlignment="Stretch" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModels:Reports}">
+                <Views:Reports HorizontalAlignment="Stretch" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="200">
+                <Border VerticalAlignment="Stretch" Background="#222d32">
+                    <StackPanel VerticalAlignment="Top">
+                        <Border MinHeight="200">
+                            <Border.Background>
+                                <ImageBrush ImageSource="Resources/Images/logo.png" />
+                            </Border.Background>
+                        </Border>
+                        <Button
+                            Command="{Binding ShowView}"
+                            CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"
+                            Style="{StaticResource MenuButton}"
+                            Tag="BaseApp.ViewModels.Dashboard"
+                            Visibility="{Binding DashboardVisible, Converter={StaticResource BoolToVisibility}, Mode=TwoWay}">
+                            <Button.Content>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        Style="{StaticResource FontAwesome}"
+                                        Text="&#xf0e4;" />
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="1.42"
+                                        Text="Dashboard" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            Command="{Binding ShowView}"
+                            CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"
+                            Style="{StaticResource MenuButton}"
+                            Tag="BaseApp.ViewModels.Settings"
+                            Visibility="{Binding SettingsVisible, Converter={StaticResource BoolToVisibility}, Mode=TwoWay}">
+                            <Button.Content>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        Style="{StaticResource FontAwesome}"
+                                        Text="&#xf013;" />
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="1.42"
+                                        Text="Settings" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            Command="{Binding ShowView}"
+                            CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"
+                            Style="{StaticResource MenuButton}"
+                            Tag="BaseApp.ViewModels.Reports"
+                            Visibility="{Binding ReportVisible, Converter={StaticResource BoolToVisibility}, Mode=TwoWay}">
+                            <Button.Content>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        Style="{StaticResource FontAwesome}"
+                                        Text="&#xf08b;" />
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="1.42"
+                                        Text="Report" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            Command="{Binding ShowView}"
+                            CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"
+                            Style="{StaticResource MenuButton}"
+                            Tag="BaseApp.ViewModels.Login"
+                            Visibility="{Binding LoginVisible, Converter={StaticResource BoolToVisibility}, Mode=TwoWay}">
+                            <Button.Content>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        Style="{StaticResource FontAwesome}"
+                                        Text="&#xf013;" />
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="1.42"
+                                        Text="Login" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            Command="{Binding LogoutUser}"
+                            Style="{StaticResource MenuButton}"
+                            Visibility="{Binding LogoutVisible, Converter={StaticResource BoolToVisibility}, Mode=TwoWay}">
+                            <Button.Content>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        Style="{StaticResource FontAwesome}"
+                                        Text="&#xf08b;" />
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="1.42"
+                                        Text="Sign out" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            x:Name="btnMinimize"
+                            Click="btnMinimize_Click"
+                            Style="{StaticResource MenuButton}">
+                            <Button.Content>
+                                <StackPanel
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        Style="{StaticResource FontAwesome}"
+                                        Text="&#xf107;" />
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        FontSize="14"
+                                        FontWeight="Normal"
+                                        LineHeight="1.42"
+                                        Text="Minimize" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Grid
+                x:Name="ContentGrid"
+                Grid.Row="0"
+                Grid.Column="1">
+                <ContentPresenter x:Name="ChildView" Content="{Binding Context}" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

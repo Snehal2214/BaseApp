@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="BaseApp.Views.Login"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Helpers="clr-namespace:WpfHelpers.Controls;assembly=WpfHelpers"
+             xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+            xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:Converters="clr-namespace:WpfHelpers.Resources.Converters;assembly=WpfHelpers"
+             xmlns:local="clr-namespace:BaseApp.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+            <Converters:InvertValueVisibilityConverter x:Key="InvertValueVisibilityConverter" />
+            <Style  x:Key="TransparentButton"  TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="FontFamily" Value="Helvetica Neue,Helvetica,Arial,sans-serif"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="4,12"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#fff"/>
+                <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border Name="border" CornerRadius="0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Border Name="dropShadowBorder" CornerRadius="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Visibility="Hidden">
+                                    </Border>
+                                    <ContentPresenter Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <!--default button highlight-->
+                                <Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                </Trigger>
+
+                                <!--inner drop shadow when pressed / checked-->
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Visibility" TargetName="dropShadowBorder" Value="Visible"/>
+                                    <Setter Property="Background" Value="#8aa4af" TargetName="border"/>
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter Property="Visibility" TargetName="dropShadowBorder" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.60"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Grid.Column="1"  Grid.Row="0" Background="#fff" >
+        <Border BorderThickness="0,3,0,0"    HorizontalAlignment="Center" VerticalAlignment="Center" Width="500">
+            <StackPanel Orientation="Vertical">
+                <Border BorderThickness="0,0,0,1" Padding="10" BorderBrush="#3c8dbc">
+                    <TextBlock Text="Login" FontSize="18" FontWeight="Bold"  LineHeight="1"/>
+                </Border>
+                <Border BorderThickness="10">
+                    <StackPanel Orientation="Vertical">
+                        <Border BorderThickness="0,0,0,15">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="User Name" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <TextBox Padding="12,6,0,6" Text="{Binding LoginID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"  Height="34" FontSize="14" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Border>
+                        <Border BorderThickness="0,0,0,15">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Password" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                <PasswordBox PasswordChar="*"  Height="34" FontSize="14" HorizontalAlignment="Stretch" Padding="12,6,0,6"  Helpers:PasswordHelper.Password="{Binding Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Border>
+                        <StackPanel Orientation="Vertical"  Visibility="{Binding ChangePasswordNow, FallbackValue=False,TargetNullValue=False, Converter={StaticResource BoolToVisibility}, Mode=TwoWay}" >
+                            <Border BorderThickness="0,0,0,15">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="New Password" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <PasswordBox PasswordChar="*"  Height="34" FontSize="14" HorizontalAlignment="Stretch" Padding="12,6,0,6"  Helpers:PasswordHelper.Password="{Binding NewPassword,Mode=TwoWay}" />
+                                </StackPanel>
+                            </Border>
+                            <!--<Border BorderThickness="0,0,0,15">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Confirm Password" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <PasswordBox PasswordChar="*"  Height="34" FontSize="14" HorizontalAlignment="Stretch" Padding="12,6,0,6"  Helpers:PasswordHelper.Password="{Binding ConfirmPassword,Mode=TwoWay}" />
+                                </StackPanel>
+                            </Border>-->
+                        </StackPanel>
+                        <Border BorderThickness="0,0,0,15" Visibility="{Binding InCorrectUser, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="UserID/Password Incorrect" HorizontalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="Red"  Margin="0,0,0,0"/>
+                        </Border>
+                        <Border BorderThickness="0,0,0,15" >
+                            <TextBlock Text="{Binding Message, Mode=TwoWay}" HorizontalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="Red"  Margin="0,0,0,0"/>
+                        </Border>
+                        <Border BorderThickness="0,0,0,0">
+                            <DockPanel  LastChildFill="False" HorizontalAlignment="Stretch">
+                                <Button Content="Exit" TabIndex="5" Style="{StaticResource TransparentButton}"  Foreground="#333" BorderThickness="0" HorizontalAlignment="Right"  DockPanel.Dock="Right">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <ei:CallMethodAction MethodName="Close" TargetObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                                <Button Content="SignIn"    TabIndex="4"  Command="{Binding LoginUser}" Style="{StaticResource TransparentButton}"  Foreground="#333" BorderThickness="0" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="4,0"/>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
